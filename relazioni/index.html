@@ -93,6 +93,24 @@ details p{color:var(--avorio-soft);margin:10px 0 0;font-size:15px;max-width:65ch
 footer{font-size:13px;color:var(--avorio-faint);text-align:center;display:flex;flex-direction:column;gap:4px}
 footer em{font-family:var(--display);font-size:17px;color:var(--avorio-soft)}
 
+/* condivisione */
+.share{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.mini{font:inherit;font-size:13px;font-weight:500;border-radius:999px;padding:7px 14px;cursor:pointer;border:1px solid var(--oro-soft);background:transparent;color:var(--oro)}
+.mini:hover{border-color:var(--oro);background:var(--oro-soft)}
+.welcome{border:1px solid var(--oro);border-radius:14px;padding:18px 20px;background:linear-gradient(135deg,var(--notte-2),var(--notte-3));display:flex;flex-direction:column;gap:6px}
+.welcome h2{font-size:24px}
+.welcome p{margin:0;color:var(--avorio-soft)}
+#welcome-res{display:flex;gap:14px;align-items:center;margin-top:8px;padding-top:12px;border-top:1px solid var(--oro-soft)}
+#welcome-res .num{font-size:60px}
+#welcome-res a{color:var(--oro)}
+.libro{border:1px solid var(--oro);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:12px;background:linear-gradient(135deg,var(--notte-3),var(--notte-2))}
+.libro p{margin:0;color:var(--avorio-soft)}
+.libro a.btn{align-self:flex-start;text-decoration:none;background:var(--oro);color:var(--notte);font-weight:600}
+.libro a.btn:hover{background:#e3c582}
+.invita{display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+.invita p{margin:0;color:var(--avorio-soft)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--oro);color:var(--notte);font-weight:600;font-size:14px;padding:10px 18px;border-radius:999px;box-shadow:0 6px 20px rgba(0,0,0,.35);z-index:9;max-width:calc(100% - 32px);text-align:center}
+
 @media (max-width:560px){
   .prow{grid-template-columns:1fr 1fr 40px;grid-template-areas:"n n n" "g m x"}
   .prow .c-n{grid-area:n}.prow .c-g{grid-area:g}.prow .c-m{grid-area:m}.prow .c-x{grid-area:x}
@@ -112,6 +130,12 @@ footer em{font-family:var(--display);font-size:17px;color:var(--avorio-soft)}
     <h1>Numeri <em>nelle relazioni</em></h1>
     <p class="lead">Inserisci fino a cinque persone della tua vita. Per ognuna vedi in che fase si trova questo mese (o quest'anno) e come avvicinarsi. Poi, coppia per coppia, cosa vi chiede il periodo che state vivendo insieme.</p>
   </header>
+
+  <div class="welcome" id="welcome" hidden>
+    <h2>Qualcuno ti ha mandato qui</h2>
+    <p>Inserisci il tuo giorno e mese di nascita: vedi subito in che fase sei questo mese. Poi aggiungi chi vuoi e guarda come vi incontrate.</p>
+    <div id="welcome-res" hidden></div>
+  </div>
 
   <div class="rule"></div>
 
@@ -147,6 +171,18 @@ footer em{font-family:var(--display);font-size:17px;color:var(--avorio-soft)}
   <section aria-labelledby="t-coppie">
     <h2 id="t-coppie">Come vi incontrate</h2>
     <div class="pairs" id="pairs"></div>
+  </section>
+
+  <section class="invita" aria-labelledby="t-invita">
+    <h2 id="t-invita">Mandalo a chi è nei tuoi numeri</h2>
+    <p>Fai scoprire a qualcuno in che fase si trova. Ognuno inserisce solo la propria data: niente viaggia insieme al link.</p>
+    <button class="btn" type="button" id="invita-btn">Manda il link</button>
+  </section>
+
+  <section class="libro" aria-labelledby="t-libro">
+    <h2 id="t-libro">Ogni numero ha molto altro da dirti</h2>
+    <p>Qui vedi solo un assaggio. Nel libro <em>Il tuo anno ha un numero</em> trovi tutto il ciclo dei nove anni: cosa porta ogni fase, cosa conviene fare e cosa lasciare, mese per mese.</p>
+    <a class="btn" id="libro-link" href="../">Leggi l'estratto gratuito</a>
   </section>
 
   <details>
@@ -198,7 +234,11 @@ footer em{font-family:var(--display);font-size:17px;color:var(--avorio-soft)}
   var state={mode:"mese",mese:now.getMonth()+1,anno:now.getFullYear(),people:[
     {n:"Esempio: Anna",g:14,m:8},{n:"Esempio: Marco",g:3,m:2},{n:"Esempio: Giulia",g:27,m:11}
   ]};
-  try{var saved=JSON.parse(localStorage.getItem("numeri-relazioni")||"null");if(saved&&saved.people)state.people=saved.people}catch(e){}
+  var saved=null;
+  try{saved=JSON.parse(localStorage.getItem("numeri-relazioni")||"null");if(saved&&saved.people)state.people=saved.people}catch(e){}
+  // chi arriva da un invito e non ha ancora usato l'app parte da sé
+  var invitato=/[?&]invito=/.test(location.search);
+  if(invitato&&!(saved&&saved.people)){state.people=[{n:"Tu",g:0,m:1}];document.getElementById("welcome").hidden=false}
   function save(){try{localStorage.setItem("numeri-relazioni",JSON.stringify({people:state.people}))}catch(e){}}
 
   var $=function(id){return document.getElementById(id)};
@@ -253,8 +293,16 @@ footer em{font-family:var(--display);font-size:17px;color:var(--avorio-soft)}
       var sotto=state.mode==="mese"?"Anno "+r.ap+" · mese "+r.num+" ("+periodo+")":"Anno personale "+state.anno;
       return '<article class="card"><div class="card-top"><div class="num">'+r.num+'</div><div class="who"><strong>'+esc(r.nome)+'</strong><span>'+sotto+'</span></div></div>'+
         '<div class="fase">'+f.nome+', '+f.parola+'</div>'+
-        '<dl><div><dt>Di cosa ha bisogno</dt><dd>'+f.bisogno+'</dd></div><div><dt>Come avvicinarsi</dt><dd>'+f.come+'</dd></div><div><dt>Da evitare</dt><dd>'+f.evita+'</dd></div></dl></article>';
+        '<dl><div><dt>Di cosa ha bisogno</dt><dd>'+f.bisogno+'</dd></div><div><dt>Come avvicinarsi</dt><dd>'+f.come+'</dd></div><div><dt>Da evitare</dt><dd>'+f.evita+'</dd></div></dl>'+
+        '<div class="share"><button class="mini" type="button" data-card="p'+r.i+'">Salva la card</button></div></article>';
     }).join("");
+    last={ok:ok,periodo:periodo};
+    var wr=$("welcome-res");
+    if(!$("welcome").hidden){
+      var me=ok[0];
+      if(me){var fm=FASI[me.num];wr.hidden=false;wr.innerHTML='<div class="num">'+me.num+'</div><div><strong>'+(state.mode==="mese"?"Questo mese":"Quest'anno")+' sei nella fase '+me.num+': '+fm.nome.toLowerCase()+', '+fm.parola+'.</strong><br><a href="#t-letture">Leggi cosa significa e come avvicinarti agli altri</a></div>'}
+      else wr.hidden=true;
+    }
 
     var gw=$("group-wrap");
     if(ok.length>=3){
@@ -270,11 +318,116 @@ footer em{font-family:var(--display);font-size:17px;color:var(--avorio-soft)}
       var A=pr[0],B=pr[1],t=TEMI[red(A.num+B.num)];
       var sotto=A.num===B.num?('Tutti e due: '+FASI[A.num].nome.toLowerCase()):(esc(A.nome)+': '+FASI[A.num].nome.toLowerCase()+' · '+esc(B.nome)+': '+FASI[B.num].nome.toLowerCase());
       return '<div class="pair"><h3>'+esc(A.nome)+' e '+esc(B.nome)+' <span class="chip">'+A.num+' + '+B.num+' = '+red(A.num+B.num)+' · '+t.t.toLowerCase()+'</span></h3>'+
-        '<p class="sotto">'+sotto+'</p><p>'+combo(A,B)+'</p></div>';
+        '<p class="sotto">'+sotto+'</p><p>'+combo(A,B)+'</p>'+
+        '<div class="share"><button class="mini" type="button" data-card="c'+A.i+'-'+B.i+'">Salva la card</button>'+
+        '<button class="mini" type="button" data-invia="'+A.i+'-'+B.i+'">Mandalo a '+esc(B.nome)+'</button></div></div>';
     }).join("");
   }
 
+  /* ---------- condivisione ---------- */
+  var last={ok:[],periodo:""};
+  var APP_URL="https://gildaossani.github.io/il-tuo-anno-ha-un-numero/relazioni/";
+  var INVITO_URL=APP_URL+"?invito=1";
+  function trova(i){for(var k=0;k<last.ok.length;k++)if(last.ok[k].i===i)return last.ok[k];return null}
+  function periodoBreve(){return state.mode==="mese"?MESI[state.mese-1]+" "+state.anno:"il "+state.anno}
+
+  function toast(t){var d=document.createElement("div");d.className="toast";d.textContent=t;document.body.appendChild(d);setTimeout(function(){d.remove()},2600)}
+
+  function inviaTesto(testo){
+    var full=testo+"\n"+INVITO_URL;
+    if(navigator.share){navigator.share({text:testo,url:INVITO_URL}).catch(function(){});return}
+    window.open("https://wa.me/?text="+encodeURIComponent(full),"_blank","noopener");
+  }
+
+  $("invita-btn").onclick=function(){
+    inviaTesto("Ho scoperto in che fase sono questo mese con la numerologia, e come incontrarmi con le persone a cui tengo. Prova anche tu: bastano giorno e mese di nascita 👇");
+  };
+
+  // testo su più righe nel canvas
+  function righe(ctx,testo,larg){
+    var parole=testo.split(" "),out=[],r="";
+    parole.forEach(function(p){var prova=r?r+" "+p:p;if(ctx.measureText(prova).width>larg&&r){out.push(r);r=p}else r=prova});
+    if(r)out.push(r);return out;
+  }
+
+  function disegna(d){
+    var W=1080,H=1920,c=document.createElement("canvas");c.width=W;c.height=H;
+    var x=c.getContext("2d");
+    var g=x.createRadialGradient(W/2,-200,100,W/2,300,1500);g.addColorStop(0,"#1d2e5c");g.addColorStop(1,"#0f1a33");
+    x.fillStyle=g;x.fillRect(0,0,W,H);
+    x.strokeStyle="rgba(214,180,106,.55)";x.lineWidth=2;x.strokeRect(48,48,W-96,H-96);
+    // due cerchi intrecciati
+    x.lineWidth=3;x.strokeStyle="#d6b46a";
+    x.beginPath();x.arc(W/2-30,300,50,0,Math.PI*2);x.stroke();
+    x.beginPath();x.arc(W/2+30,300,50,0,Math.PI*2);x.stroke();
+    x.textAlign="center";x.textBaseline="alphabetic";
+    x.fillStyle="#d6b46a";x.font='500 30px "DM Sans",sans-serif';
+    x.fillText("NUMERI NELLE RELAZIONI",W/2,430);
+    x.fillStyle="#f3ecdf";x.font='500 76px "Cormorant Garamond",serif';
+    var y=540;righe(x,d.titolo,W-200).forEach(function(r){x.fillText(r,W/2,y);y+=84});
+    x.fillStyle="rgba(243,236,223,.72)";x.font='400 34px "DM Sans",sans-serif';
+    x.fillText(d.periodo,W/2,y+6);y+=70;
+    x.fillStyle="#d6b46a";x.font='500 '+(d.numero.length>3?190:300)+'px "Cormorant Garamond",serif';
+    y+=(d.numero.length>3?190:280);x.fillText(d.numero,W/2,y);var mn=x.measureText(d.numero);y+=Math.max(110,(mn.actualBoundingBoxDescent||0)+95);
+    x.fillStyle="#f3ecdf";x.font='italic 600 64px "Cormorant Garamond",serif';
+    righe(x,d.etichetta,W-200).forEach(function(r){x.fillText(r,W/2,y);y+=72});
+    y+=30;
+    var lg=x.createLinearGradient(240,0,W-240,0);lg.addColorStop(0,"rgba(214,180,106,0)");lg.addColorStop(.5,"#d6b46a");lg.addColorStop(1,"rgba(214,180,106,0)");
+    x.fillStyle=lg;x.fillRect(240,y,W-480,2);y+=80;
+    x.fillStyle="rgba(243,236,223,.85)";x.font='400 40px "DM Sans",sans-serif';
+    var rr=righe(x,d.testo,W-240);if(rr.length>7){rr=rr.slice(0,7);rr[6]=rr[8].replace(/[\s,.;:]*\S*$/,"")+"…"}
+    rr.forEach(function(r){x.fillText(r,W/2,y);y+=58});
+    x.fillStyle="#d6b46a";x.font='500 32px "DM Sans",sans-serif';
+    x.fillText("Scopri i tuoi numeri",W/2,H-420);
+    x.fillStyle="rgba(243,236,223,.6)";x.font='400 28px "DM Sans",sans-serif';
+    x.fillText("gildaossani.github.io/il-tuo-anno-ha-un-numero/relazioni",W/2,H-372);
+    x.fillStyle="rgba(243,236,223,.45)";x.font='italic 500 30px "Cormorant Garamond",serif';
+    x.fillText("Gilda Ossani · Il tuo anno ha un numero",W/2,H-326);
+    return c;
+  }
+
+  function salvaCard(d,nomeFile){
+    var fonti=['500 76px "Cormorant Garamond"','italic 600 64px "Cormorant Garamond"','400 40px "DM Sans"','500 32px "DM Sans"'];
+    var attendi=document.fonts&&document.fonts.load?Promise.all(fonti.map(function(f){return document.fonts.load(f)})):Promise.resolve();
+    attendi.catch(function(){}).then(function(){
+      disegna(d).toBlob(function(blob){
+        if(!blob){toast("Non riesco a creare l'immagine");return}
+        var file=null;try{file=new File([blob],nomeFile,{type:"image/png"})}catch(e){}
+        if(file&&navigator.canShare&&navigator.canShare({files:[file]})){
+          navigator.share({files:[file],title:"Numeri nelle relazioni"}).catch(function(){});
+          return;
+        }
+        var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=nomeFile;document.body.appendChild(a);a.click();
+        setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},1500);
+        toast("Card salvata: la trovi nei download");
+      },"image/png");
+    });
+  }
+
+  function slug(s){return s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")}
+
+  document.addEventListener("click",function(e){
+    var b=e.target.closest("[data-card],[data-invia]");if(!b)return;
+    var per=periodoBreve();
+    if(b.dataset.card){
+      var k=b.dataset.card;
+      if(k[0]==="p"){
+        var r=trova(+k.slice(1));if(!r)return;var f=FASI[r.num];
+        salvaCard({titolo:r.nome,periodo:(state.mode==="mese"?"Mese personale · ":"Anno personale · ")+per,numero:String(r.num),etichetta:f.nome+", "+f.parola,testo:f.bisogno},"numeri-"+slug(r.nome)+".png");
+      } else {
+        var ij=k.slice(1).split("-"),A=trova(+ij[0]),B=trova(+ij[1]);if(!A||!B)return;
+        var n=red(A.num+B.num);
+        salvaCard({titolo:A.nome+" e "+B.nome,periodo:per,numero:A.num+" + "+B.num+" = "+n,etichetta:TEMI[n].t,testo:combo(A,B)},"numeri-"+slug(A.nome)+"-"+slug(B.nome)+".png");
+      }
+    } else {
+      var ij2=b.dataset.invia.split("-"),A2=trova(+ij2[0]),B2=trova(+ij2[1]);if(!A2||!B2)return;
+      var n2=red(A2.num+B2.num);
+      inviaTesto("Ho guardato i nostri numeri per "+per+": insieme siamo un "+n2+", \""+TEMI[n2].t.toLowerCase()+"\". Guarda in che fase sei tu 👇");
+    }
+  });
+
   drawPeople();setMode("mese");
+  if(invitato&&!(saved&&saved.people)){var gi=document.getElementById("g0");if(gi)gi.focus()}
 })();
 </script>
 
