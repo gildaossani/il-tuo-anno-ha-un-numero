@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Numeri nelle relazioni, il bonus del libro Il tuo anno ha un numero di Gilda Ossani: mese e anno personale di fino a cinque persone e come incontrarsi.">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Numeri nelle relazioni</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=DM+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: una colonna stretta come una pagina di libro; persone in alto, letture sotto, coppie in fondo */
+:root{
+  --notte:#0f1a33; --notte-2:#16244a; --notte-3:#1d2e5c;
+  --oro:#d6b46a; --oro-soft:rgba(214,180,106,.18);
+  --avorio:#f3ecdf; --avorio-soft:rgba(243,236,223,.72); --avorio-faint:rgba(243,236,223,.45);
+  --display:"Cormorant Garamond",Georgia,"Times New Roman",serif;
+  --body:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--notte);color:var(--avorio);font-family:var(--body);font-size:16px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  background-image:radial-gradient(ellipse at 50% -10%,var(--notte-3) 0%,transparent 60%);background-attachment:fixed}
+.wrap{max-width:720px;margin:0 auto;padding-block:40px 64px;display:flex;flex-direction:column;gap:40px}
+header{display:flex;flex-direction:column;gap:12px}
+.eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--oro)}
+h1{font-family:var(--display);font-weight:500;font-size:clamp(40px,8vw,60px);line-height:1;margin:0;text-wrap:balance}
+h1 em{color:var(--oro);font-style:italic}
+h2{font-family:var(--display);font-weight:600;font-size:28px;margin:0;line-height:1.15;text-wrap:balance}
+.lead{color:var(--avorio-soft);max-width:60ch;margin:0}
+.rule{height:1px;background:linear-gradient(90deg,transparent,var(--oro),transparent);opacity:.5}
+section{display:flex;flex-direction:column;gap:16px}
+.hint{font-size:14px;color:var(--avorio-faint);margin:0}
+
+/* persone */
+.people{display:flex;flex-direction:column;gap:10px}
+.prow{display:grid;grid-template-columns:1fr 84px 140px 40px;gap:8px;align-items:end}
+.prow label{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--avorio-faint);margin-bottom:4px}
+input,select{width:100%;font:inherit;color:var(--avorio);background:var(--notte-2);border:1px solid var(--oro-soft);border-radius:8px;padding:10px 12px;min-width:0}
+input:focus,select:focus,button:focus-visible{outline:2px solid var(--oro);outline-offset:2px}
+.del{height:44px;width:40px;border:1px solid var(--oro-soft);background:transparent;color:var(--avorio-faint);border-radius:8px;cursor:pointer;font-size:20px;line-height:1}
+.del:hover{color:var(--oro);border-color:var(--oro)}
+.actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.btn{font:inherit;font-weight:500;border-radius:999px;padding:10px 18px;cursor:pointer;border:1px solid var(--oro);background:transparent;color:var(--oro)}
+.btn:hover{background:var(--oro-soft)}
+.btn[disabled]{opacity:.4;cursor:default}
+.btn.ghost{border-color:var(--oro-soft);color:var(--avorio-faint)}
+
+/* periodo */
+.period{display:flex;flex-wrap:wrap;gap:12px;align-items:end}
+.seg{display:inline-flex;border:1px solid var(--oro-soft);border-radius:999px;padding:3px}
+.seg button{font:inherit;font-size:14px;border:0;background:transparent;color:var(--avorio-soft);padding:8px 16px;border-radius:999px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--oro);color:var(--notte);font-weight:600}
+.period .f{min-width:120px}
+.period label{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--avorio-faint);margin-bottom:4px}
+
+/* letture */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.card{background:var(--notte-2);border:1px solid var(--oro-soft);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.card-top{display:flex;gap:14px;align-items:center}
+.num{font-family:var(--display);font-size:56px;line-height:.9;color:var(--oro);font-weight:500;min-width:36px;text-align:center;font-variant-numeric:lining-nums}
+.who{display:flex;flex-direction:column;min-width:0}
+.who strong{font-size:18px;font-weight:600;overflow-wrap:anywhere}
+.who span{font-size:13px;color:var(--avorio-faint)}
+.fase{font-family:var(--display);font-style:italic;font-size:20px;color:var(--avorio)}
+dl{margin:0;display:flex;flex-direction:column;gap:8px}
+dt{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--oro)}
+dd{margin:0;color:var(--avorio-soft);font-size:15px}
+
+.group{border:1px solid var(--oro);border-radius:14px;padding:20px;display:flex;gap:18px;align-items:center;background:linear-gradient(135deg,var(--notte-2),var(--notte-3))}
+.group .num{font-size:72px}
+.group p{margin:0;color:var(--avorio-soft)}
+.group h3{margin:0 0 4px;font-family:var(--display);font-size:24px;font-weight:600}
+
+.pairs{display:flex;flex-direction:column;gap:12px}
+.pair{border-top:1px solid var(--oro-soft);padding-top:14px;display:flex;flex-direction:column;gap:6px}
+.pair h3{margin:0;font-size:17px;font-weight:600;display:flex;flex-wrap:wrap;gap:8px;align-items:baseline}
+.chip{font-size:12px;border:1px solid var(--oro-soft);color:var(--oro);border-radius:999px;padding:2px 10px;font-weight:500}
+.pair p{margin:0;color:var(--avorio-soft);font-size:15px;max-width:65ch}
+.pair .sotto{font-size:13px;color:var(--avorio-faint);font-style:italic}
+.pair p:last-child{color:var(--avorio)}
+
+.empty{color:var(--avorio-faint);font-style:italic}
+details{border:1px solid var(--oro-soft);border-radius:12px;padding:14px 16px}
+summary{cursor:pointer;color:var(--oro);font-weight:500}
+details p{color:var(--avorio-soft);margin:10px 0 0;font-size:15px;max-width:65ch}
+footer{font-size:13px;color:var(--avorio-faint);text-align:center;display:flex;flex-direction:column;gap:4px}
+footer em{font-family:var(--display);font-size:17px;color:var(--avorio-soft)}
+
+@media (max-width:560px){
+  .prow{grid-template-columns:1fr 1fr 40px;grid-template-areas:"n n n" "g m x"}
+  .prow .c-n{grid-area:n}.prow .c-g{grid-area:g}.prow .c-m{grid-area:m}.prow .c-x{grid-area:x}
+  .prow{padding-bottom:10px;border-bottom:1px solid var(--oro-soft)}
+  .group{flex-direction:column;align-items:flex-start}
+}
+@media (prefers-reduced-motion:no-preference){
+  .card,.pair,.group{animation:rise .35s ease both}
+  @keyframes rise{from{transform:translateY(6px)}to{transform:none}}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Bonus del libro · Il tuo anno ha un numero</div>
+    <h1>Numeri <em>nelle relazioni</em></h1>
+    <p class="lead">Inserisci fino a cinque persone della tua vita. Per ognuna vedi in che fase si trova questo mese (o quest'anno) e come avvicinarsi. Poi, coppia per coppia, cosa vi chiede il periodo che state vivendo insieme.</p>
+  </header>
+
+  <div class="rule"></div>
+
+  <section aria-labelledby="t-persone">
+    <h2 id="t-persone">Chi c'è</h2>
+    <p class="hint">Bastano nome, giorno e mese di nascita. L'anno di nascita non serve. I dati restano sul tuo telefono o computer.</p>
+    <div class="people" id="people"></div>
+    <div class="actions">
+      <button class="btn" id="add" type="button">+ Aggiungi persona</button>
+      <button class="btn ghost" id="reset" type="button">Svuota</button>
+    </div>
+  </section>
+
+  <section aria-labelledby="t-periodo">
+    <h2 id="t-periodo">Quale periodo</h2>
+    <div class="period">
+      <div class="seg" role="group" aria-label="Tipo di lettura">
+        <button type="button" id="m-mese" aria-pressed="true">Mese personale</button>
+        <button type="button" id="m-anno" aria-pressed="false">Anno personale</button>
+      </div>
+      <div class="f" id="f-mese"><label for="sel-mese">Mese</label><select id="sel-mese"></select></div>
+      <div class="f"><label for="sel-anno">Anno</label><select id="sel-anno"></select></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="t-letture">
+    <h2 id="t-letture">Ognuno nella sua fase</h2>
+    <div class="cards" id="cards"></div>
+  </section>
+
+  <div id="group-wrap"></div>
+
+  <section aria-labelledby="t-coppie">
+    <h2 id="t-coppie">Come vi incontrate</h2>
+    <div class="pairs" id="pairs"></div>
+  </section>
+
+  <details>
+    <summary>Come si calcola</summary>
+    <p>Anno personale: giorno di nascita + mese di nascita + anno che vuoi conoscere, ogni somma ridotta a una cifra da 1 a 9. Mese personale: anno personale + numero del mese, ridotto allo stesso modo. Il numero di una coppia è la somma dei due numeri ridotta. È il metodo del libro: anno da gennaio, l'11 diventa 2.</p>
+    <p>È una cornice di lettura per guardarvi con più attenzione. Non prevede eventi e non dice chi ha ragione.</p>
+  </details>
+
+  <footer>
+    <em>Il tuo anno ha un numero</em>
+    <span>Gilda Ossani · numerologia dell'anno personale</span>
+  </footer>
+</div>
+
+<script>
+(function(){
+  var MESI=["gennaio","febbraio","marzo","aprile","maggio","giugno","luglio","agosto","settembre","ottobre","novembre","dicembre"];
+  var MAX=5;
+
+  var FASI={
+    1:{nome:"Il seme",parola:"l'inizio",bisogno:"Spazio per partire, decidere e provare qualcosa di nuovo in autonomia.",come:"Chiedi cosa vuole cominciare e lascia che guidi almeno una cosa.",evita:"Decidere al posto suo o frenare con troppi \"aspetta\"."},
+    2:{nome:"Il ponte",parola:"gli accordi",bisogno:"Ascolto, tempi lenti e qualche conferma in più del solito.",come:"Parlate a quattr'occhi, con calma, e chiedi il suo parere.",evita:"Fretta, toni bruschi e scelte all'ultimo minuto."},
+    3:{nome:"La voce",parola:"l'espressione",bisogno:"Raccontare, ridere, avere attenzione e ascolto.",come:"Dedica tempo ai suoi racconti e proponi qualcosa di leggero insieme.",evita:"Liquidare le sue idee come chiacchiere."},
+    4:{nome:"Le fondamenta",parola:"la struttura",bisogno:"Ordine, piani chiari e rispetto per la fatica che fa.",come:"Dai una mano concreta e mantieni quello che prometti.",evita:"Cambi di programma improvvisi."},
+    5:{nome:"Il viaggio",parola:"il movimento",bisogno:"Libertà, aria nuova, possibilità di cambiare idea.",come:"Proponi una novità, anche piccola, e accetta i piani che cambiano.",evita:"Controllare ogni spostamento o chiedere conto di tutto."},
+    6:{nome:"Il nido",parola:"la cura",bisogno:"Sentirsi utile, e ricevere a sua volta un po' di cura.",come:"Ringrazia per quello che fa e prenditi tu cura di qualcosa.",evita:"Dare per scontato il suo impegno."},
+    7:{nome:"Il silenzio",parola:"il raccoglimento",bisogno:"Silenzio, tempo per sé, domande da lasciar maturare.",come:"Rispetta i suoi spazi e fai domande aperte, senza insistere.",evita:"Leggere il suo ritiro come un rifiuto."},
+    8:{nome:"Il raccolto",parola:"i risultati",bisogno:"Obiettivi concreti e riconoscimento per quello che ottiene.",come:"Parlate di cose pratiche e riconosci a voce i suoi risultati.",evita:"Sminuire le sue ambizioni o i suoi conti."},
+    9:{nome:"La soglia",parola:"la chiusura",bisogno:"Lasciar andare, fare bilanci, emozioni più a fior di pelle.",come:"Pazienza e ascolto, anche quando torna su cose vecchie.",evita:"Spingere su progetti nuovi a lungo termine."}
+  };
+  var TEMI={
+    1:{t:"Ripartire",d:"Un buon periodo per un progetto nuovo insieme o per cambiare un'abitudine che non funziona più."},
+    2:{t:"Ascoltarsi",d:"Conta più come vi parlate di cosa decidete. Rallentate e chiedete prima di dare per scontato."},
+    3:{t:"Leggerezza",d:"Ridere insieme, uscire, raccontarsi. Le cose pesanti si sciolgono meglio con un po' di gioco."},
+    4:{t:"Organizzarsi",d:"Dividete i compiti e fate piani concreti. Un calendario condiviso vale più di dieci discussioni."},
+    5:{t:"Cambiare aria",d:"Una novità, anche piccola, sblocca la routine: un posto nuovo, un orario diverso, una gita."},
+    6:{t:"Prendersi cura",d:"Gesti, attenzioni, casa. Ognuno faccia una cosa concreta per l'altro."},
+    7:{t:"Rispettare i silenzi",d:"Meno domande e più presenza. Stare vicini senza dover per forza parlare."},
+    8:{t:"Chiarire",d:"Ruoli, soldi, aspettative: è il periodo giusto per metterli sul tavolo con calma."},
+    9:{t:"Chiudere un cerchio",d:"Sistemare una questione vecchia, chiedere scusa o lasciar correre qualcosa che pesa da tempo."}
+  };
+  var COMBO={"1-1": "Avete tutti e due voglia di cominciare qualcosa, e si sente. È un'energia bella da condividere: se la mettete in un progetto comune, invece di spingere ognuno per la propria strada, potreste sorprendervi di quanto andate lontano insieme.", "2-2": "Vi muovete con la stessa delicatezza, e questo rende facile capirsi anche senza parlare troppo. Il rischio è aspettare che sia l'altro a decidere: a volte basta che uno dei due dica cosa desidera, e tutto si sblocca con naturalezza.", "3-3": "È un periodo di chiacchiere, risate e voglia di raccontarsi. Godetevelo. E quando uno dei due porta un pensiero più serio, provate a fermare il gioco per un momento: anche quello ha bisogno di spazio.", "4-4": "Insieme siete una squadra concreta, capace di mettere ordine dove serve. Proprio per questo vale la pena ricordarsi di staccare ogni tanto: una serata senza liste può fare per voi più di una settimana di impegni.", "5-5": "Avete la stessa voglia di muovervi, cambiare aria, provare cose nuove, e insieme vi divertite parecchio. Forse conviene scegliere un paio di punti fermi, così che la leggerezza non lasci indietro le cose di casa.", "6-6": "Vi prendete cura di tutto e di tutti, spesso senza nemmeno dirvelo. In questo periodo può essere prezioso fare lo stesso tra voi: chiedersi chi si occupa di chi, e concedersi a turno un po' di riposo.", "7-7": "Vi capite nei silenzi, e state bene anche vicini senza parlare. Ogni tanto però una domanda sincera, come stai davvero, può aprire una conversazione che tutti e due stavate aspettando.", "8-8": "Avete obiettivi chiari e la forza per raggiungerli. Se remate nella stessa direzione potete ottenere molto; se cominciate a contendervi le decisioni, parlarne apertamente, ruoli e soldi compresi, vi farà risparmiare tempo ed energie.", "9-9": "State chiudendo un capitolo insieme, e può esserci un po' di nostalgia. È il momento dei bilanci, dei ricordi, di quello che lasciate andare. I progetti nuovi possono aspettare: arriveranno con più chiarezza tra poco.", "1-2": "Uno di voi ha voglia di partire, l'altro preferisce prima sentirsi d'accordo. Non è un freno: quando chi sta cominciando chiede un parere prima di correre, chi cerca accordi diventa il miglior alleato possibile.", "1-3": "Un incontro fertile: da una parte nascono le idee, dall'altra trovano parole e leggerezza. Se avete qualcosa di creativo in mente, anche piccolo, questo è il periodo giusto per farlo insieme.", "1-4": "La fretta di cominciare incontra il bisogno di un piano. Può sembrare un attrito, ma vi completate: il piano dà alle idee nuove la struttura per durare, e l'entusiasmo rende il piano meno pesante.", "1-5": "Siete due motori accesi, con voglia di novità e di movimento. Insieme le giornate scorrono veloci e piene; magari mettetevi d'accordo su chi tiene d'occhio le cose pratiche, così nessuno resta con il conto in mano.", "1-6": "Uno di voi è concentrato su ciò che sta nascendo, l'altro sulle persone intorno. Un gesto di riconoscenza per la cura ricevuta, anche solo un grazie detto con calma, cambia l'aria più di quanto sembri.", "1-7": "Uno guarda verso fuori, l'altro verso dentro. Se a volte sembrate lontani non è distanza vera, state solo andando in direzioni diverse. Raccontarvi cosa state cercando aiuta a sentirvi vicini lo stesso.", "1-8": "Due fasi determinate, piene di energia. Insieme potete realizzare molto, a patto di chiarire all'inizio chi guida cosa: una volta divisi i campi, vi sosterrete invece di pestarvi i piedi.", "1-9": "Uno sta cominciando proprio mentre l'altro sta chiudendo. C'è uno scambio prezioso in questo: l'esperienza di chi chiude può guidare chi parte, e l'entusiasmo di chi parte può restituire fiducia in quello che verrà.", "2-3": "Uno ha voglia di raccontare, l'altro ha bisogno di ascolto vero. Se fate a turno, prendendovi il tempo di parlare e poi di ascoltare, ne escono le conversazioni più belle del periodo.", "2-4": "È un incontro tranquillo, fatto di accordi e di ordine. Un buon momento per sistemare insieme le cose di casa, le regole, i calendari: quello che decidete adesso tende a reggere a lungo.", "2-5": "Da una parte c'è voglia di muoversi, dall'altra bisogno di stabilità. Molte tensioni si sciolgono con una cosa semplice: avvisare prima dei cambi di programma, così chi cerca sicurezza non si sente scavalcato.", "2-6": "In questo incontro c'è tanta dolcezza e voglia di stare bene. L'unica attenzione è non dirvi sempre di sì solo per evitare di discutere: anche un piccolo no, detto con garbo, fa parte dell'affetto.", "2-7": "Due fasi lente e sensibili, che si capiscono senza bisogno di molte parole. Serate tranquille e tempo passato semplicemente insieme vi fanno bene, più di qualsiasi programma.", "2-8": "Uno va dritto al risultato, l'altro ha bisogno di tatto e di gentilezza. Con un tono un po' più morbido da una parte e un po' di pazienza dall'altra, potete ottenere molto senza ferirvi.", "2-9": "Uno di voi sta lasciando andare qualcosa, e l'altro sa ascoltare come pochi in questo momento. È un periodo adatto alle conversazioni profonde, quelle che di solito si rimandano.", "3-4": "Uno cerca leggerezza, l'altro ha la testa piena di doveri. Potete aiutarvi a vicenda: un po' di svago alleggerisce chi lavora troppo, e un po' di concretezza aiuta chi vola a portare a casa qualcosa.", "3-5": "Un incontro vivace, pieno di idee, uscite e imprevisti. Se state pensando a un viaggio, a un corso o a un'esperienza nuova da fare insieme, questo è il momento per lanciarvi.", "3-6": "Da una parte arriva l'allegria, dall'altra la cura. Insieme create un clima accogliente: una cena, una festa in casa, una tavola apparecchiata con calma sono il modo più naturale per stare bene.", "3-7": "Uno ha bisogno di parlare, l'altro di silenzio. Non tutto va detto subito: scegliere il momento giusto, magari una passeggiata o un viaggio in macchina, rende le parole più facili da accogliere.", "3-8": "Uno è pieno di idee, l'altro pensa ai risultati. Se vi date una mano, le idee diventano qualcosa di concreto e gli obiettivi si fanno più leggeri da inseguire.", "3-9": "È un periodo di ricordi, racconti, emozioni che tornano a galla. Chi ha facilità con le parole può aiutare l'altro a dare un nome a quello che sta chiudendo, e a sentirlo meno pesante.", "4-5": "È l'attrito più classico: uno ha bisogno di un piano, l'altro della libertà di cambiarlo. Funziona bene tenere fisse poche cose importanti e lasciare aperto tutto il resto, così ognuno respira.", "4-6": "Un incontro solido, su cui si può contare. Ottimo per i progetti di casa e di famiglia; ricordatevi solo di lasciare spazio anche al piacere, non soltanto alle cose da fare.", "4-7": "Due fasi serie e un po' riservate, che si rispettano molto. Il rischio è parlarvi solo di impegni: concedetevi ogni tanto una conversazione che non abbia nessuno scopo pratico.", "4-8": "C'è una grande intesa pratica: uno costruisce con pazienza, l'altro punta in alto. È un buon periodo per prendere insieme decisioni di lavoro o di soldi, con i piedi per terra e lo sguardo lontano.", "4-9": "Uno sta costruendo, l'altro sta chiudendo e facendo spazio. Può nascere confusione su cosa tenere e cosa lasciare: sceglierlo insieme, con calma, vi evita di disfare l'uno il lavoro dell'altro.", "5-6": "Uno cerca libertà, l'altro vorrebbe tutti vicini. Non c'è bisogno di scegliere: un po' di spazio da una parte e un po' di presenza dall'altra, a turno, tengono in equilibrio il rapporto.", "5-7": "Uno ha voglia di uscire, l'altro di restare. Va benissimo fare alcune cose insieme e altre per conto proprio: tornare a casa con qualcosa da raccontarvi è già un modo di stare vicini.", "5-8": "Energia alta da tutte e due le parti, e voglia di cambiare le cose sul serio. È un buon periodo per i cambiamenti concreti, come un trasloco, un lavoro nuovo o una decisione rimandata da tempo.", "5-9": "State lasciando qualcosa alle spalle tutti e due, ciascuno a modo suo. Un cambio d'aria insieme, anche solo una giornata fuori, può aiutarvi a chiudere bene il capitolo e guardare avanti.", "6-7": "Uno vorrebbe prendersi cura, l'altro ha bisogno di stare per conto suo. In questo periodo la cura più preziosa è proprio lo spazio: esserci senza invadere, e aspettare che sia l'altro ad avvicinarsi.", "6-8": "Uno pensa alle persone, l'altro agli obiettivi. Insieme riuscite a tenere in equilibrio affetti e impegni, ricordandovi a vicenda quello che rischiereste di trascurare da soli.", "6-9": "Due fasi generose, sempre pronte a dare. Attenzione a non caricarvi dei problemi di tutti, compresi quelli dell'uno sull'altro: a volte la cosa più affettuosa è lasciarsi riposare.", "7-8": "Uno vuole agire subito, l'altro sente il bisogno di capire prima. Le domande di chi riflette possono evitare un passo falso a chi corre, e la decisione di chi corre può aiutare l'altro a non restare fermo troppo a lungo.", "7-9": "È un periodo introspettivo per tutti e due. Bello per le conversazioni profonde e i pensieri lunghi, meno adatto alle decisioni prese in fretta: lasciate che le cose maturino.", "8-9": "Uno guarda avanti, l'altro sta chiudendo. Chi corre non metta fretta: quello che si chiude adesso libera spazio per tutti e due, e prepara il terreno per quello che verrà."};
+  function combo(X,Y){var A=X.num<=Y.num?X:Y,B=A===X?Y:X;return COMBO[A.num+"-"+B.num]||""}
+
+  function red(n){n=Math.abs(n);while(n>9){var s=0;String(n).split("").forEach(function(c){s+=+c});n=s}return n}
+  function annoP(g,m,y){return red(red(g)+red(m)+red(y))}
+
+  var now=new Date();
+  var state={mode:"mese",mese:now.getMonth()+1,anno:now.getFullYear(),people:[
+    {n:"Esempio: Anna",g:14,m:8},{n:"Esempio: Marco",g:3,m:2},{n:"Esempio: Giulia",g:27,m:11}
+  ]};
+  try{var saved=JSON.parse(localStorage.getItem("numeri-relazioni")||"null");if(saved&&saved.people)state.people=saved.people}catch(e){}
+  function save(){try{localStorage.setItem("numeri-relazioni",JSON.stringify({people:state.people}))}catch(e){}}
+
+  var $=function(id){return document.getElementById(id)};
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+
+  // periodo
+  MESI.forEach(function(m,i){var o=document.createElement("option");o.value=i+1;o.textContent=m;$("sel-mese").appendChild(o)});
+  for(var y=now.getFullYear()-1;y<=now.getFullYear()+3;y++){var o=document.createElement("option");o.value=y;o.textContent=y;$("sel-anno").appendChild(o)}
+  $("sel-mese").value=state.mese;$("sel-anno").value=state.anno;
+  $("sel-mese").onchange=function(){state.mese=+this.value;render()};
+  $("sel-anno").onchange=function(){state.anno=+this.value;render()};
+  function setMode(m){state.mode=m;$("m-mese").setAttribute("aria-pressed",m==="mese");$("m-anno").setAttribute("aria-pressed",m==="anno");$("f-mese").hidden=m!=="mese";render()}
+  $("m-mese").onclick=function(){setMode("mese")};$("m-anno").onclick=function(){setMode("anno")};
+
+  // persone
+  function drawPeople(){
+    var box=$("people");box.innerHTML="";
+    state.people.forEach(function(p,i){
+      var row=document.createElement("div");row.className="prow";
+      var opts=MESI.map(function(m,k){return '<option value="'+(k+1)+'"'+((k+1)==p.m?" selected":"")+'>'+m+'</option>'}).join("");
+      row.innerHTML='<div class="c-n"><label for="n'+i+'">Nome</label><input id="n'+i+'" maxlength="30" value="'+esc(p.n)+'" placeholder="Nome"></div>'+
+        '<div class="c-g"><label for="g'+i+'">Giorno</label><input id="g'+i+'" type="number" inputmode="numeric" min="1" max="31" value="'+(p.g||"")+'"></div>'+
+        '<div class="c-m"><label for="m'+i+'">Mese</label><select id="m'+i+'">'+opts+'</select></div>'+
+        '<div class="c-x"><button class="del" type="button" aria-label="Togli '+esc(p.n||"persona")+'">×</button></div>';
+      row.querySelector("#n"+i).oninput=function(){p.n=this.value;save();render()};
+      row.querySelector("#g"+i).oninput=function(){var v=parseInt(this.value,10);p.g=(v>=1&&v<=31)?v:0;save();render()};
+      row.querySelector("#m"+i).onchange=function(){p.m=+this.value;save();render()};
+      row.querySelector(".del").onclick=function(){state.people.splice(i,1);save();drawPeople();render()};
+      box.appendChild(row);
+    });
+    $("add").disabled=state.people.length>=MAX;
+    $("add").textContent=state.people.length>=MAX?"Massimo 5 persone":"+ Aggiungi persona";
+  }
+  $("add").onclick=function(){if(state.people.length<MAX){state.people.push({n:"",g:0,m:1});save();drawPeople();render();var l=state.people.length-1;var el=$("n"+l);if(el)el.focus()}};
+  $("reset").onclick=function(){state.people=[{n:"",g:0,m:1}];save();drawPeople();render()};
+
+  function nomeDi(p,i){var n=(p.n||"").replace(/^Esempio:\s*/,"").trim();return n||("Persona "+(i+1))}
+
+  function render(){
+    var periodo=state.mode==="mese"?MESI[state.mese-1]+" "+state.anno:"il "+state.anno;
+    var ok=state.people.map(function(p,i){
+      if(!p.g||!p.m)return null;
+      var ap=annoP(p.g,p.m,state.anno);
+      var num=state.mode==="mese"?red(ap+state.mese):ap;
+      return {i:i,nome:nomeDi(p,i),ap:ap,num:num};
+    }).filter(Boolean);
+
+    var cards=$("cards");
+    if(!ok.length){cards.innerHTML='<p class="empty">Aggiungi almeno una persona con giorno e mese di nascita.</p>'}
+    else cards.innerHTML=ok.map(function(r){
+      var f=FASI[r.num];
+      var sotto=state.mode==="mese"?"Anno "+r.ap+" · mese "+r.num+" ("+periodo+")":"Anno personale "+state.anno;
+      return '<article class="card"><div class="card-top"><div class="num">'+r.num+'</div><div class="who"><strong>'+esc(r.nome)+'</strong><span>'+sotto+'</span></div></div>'+
+        '<div class="fase">'+f.nome+', '+f.parola+'</div>'+
+        '<dl><div><dt>Di cosa ha bisogno</dt><dd>'+f.bisogno+'</dd></div><div><dt>Come avvicinarsi</dt><dd>'+f.come+'</dd></div><div><dt>Da evitare</dt><dd>'+f.evita+'</dd></div></dl></article>';
+    }).join("");
+
+    var gw=$("group-wrap");
+    if(ok.length>=3){
+      var g=red(ok.reduce(function(s,r){return s+r.num},0));
+      gw.innerHTML='<div class="group"><div class="num">'+g+'</div><div><h3>Il gruppo, '+periodo+': '+TEMI[g].t.toLowerCase()+'</h3><p>'+TEMI[g].d+'</p></div></div>';
+    } else gw.innerHTML="";
+
+    var pairs=[];
+    for(var a=0;a<ok.length;a++)for(var b=a+1;b<ok.length;b++)pairs.push([ok[a],ok[b]]);
+    var pb=$("pairs");
+    if(pairs.length===0){pb.innerHTML='<p class="empty">Servono almeno due persone per leggere una coppia.</p>';return}
+    pb.innerHTML=pairs.map(function(pr){
+      var A=pr[0],B=pr[1],t=TEMI[red(A.num+B.num)];
+      var sotto=A.num===B.num?('Tutti e due: '+FASI[A.num].nome.toLowerCase()):(esc(A.nome)+': '+FASI[A.num].nome.toLowerCase()+' · '+esc(B.nome)+': '+FASI[B.num].nome.toLowerCase());
+      return '<div class="pair"><h3>'+esc(A.nome)+' e '+esc(B.nome)+' <span class="chip">'+A.num+' + '+B.num+' = '+red(A.num+B.num)+' · '+t.t.toLowerCase()+'</span></h3>'+
+        '<p class="sotto">'+sotto+'</p><p>'+combo(A,B)+'</p></div>';
+    }).join("");
+  }
+
+  drawPeople();setMode("mese");
+})();
+</script>
+
+</body>
+</html>
