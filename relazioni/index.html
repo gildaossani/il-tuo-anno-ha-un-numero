@@ -356,15 +356,18 @@ footer em{font-family:var(--display);font-size:17px;color:var(--avorio-soft)}
     var g=x.createRadialGradient(W/2,-200,100,W/2,300,1500);g.addColorStop(0,"#1d2e5c");g.addColorStop(1,"#0f1a33");
     x.fillStyle=g;x.fillRect(0,0,W,H);
     x.strokeStyle="rgba(214,180,106,.55)";x.lineWidth=2;x.strokeRect(48,48,W-96,H-96);
-    // due cerchi intrecciati
-    x.lineWidth=3;x.strokeStyle="#d6b46a";
-    x.beginPath();x.arc(W/2-30,300,50,0,Math.PI*2);x.stroke();
-    x.beginPath();x.arc(W/2+30,300,50,0,Math.PI*2);x.stroke();
+    // immagine dell'app (spirale), in un cerchio con filo d'oro
+    var R=92,cy=250;
+    if(ICONA.complete&&ICONA.naturalWidth){
+      x.save();x.beginPath();x.arc(W/2,cy,R,0,Math.PI*2);x.clip();
+      x.drawImage(ICONA,W/2-R,cy-R,R*2,R*2);x.restore();
+    }
+    x.lineWidth=3;x.strokeStyle="#d6b46a";x.beginPath();x.arc(W/2,cy,R+6,0,Math.PI*2);x.stroke();
     x.textAlign="center";x.textBaseline="alphabetic";
     x.fillStyle="#d6b46a";x.font='500 30px "DM Sans",sans-serif';
-    x.fillText("NUMERI NELLE RELAZIONI",W/2,430);
+    x.fillText("NUMERI NELLE RELAZIONI",W/2,420);
     x.fillStyle="#f3ecdf";x.font='500 76px "Cormorant Garamond",serif';
-    var y=540;righe(x,d.titolo,W-200).forEach(function(r){x.fillText(r,W/2,y);y+=84});
+    var y=520;righe(x,d.titolo,W-200).forEach(function(r){x.fillText(r,W/2,y);y+=84});
     x.fillStyle="rgba(243,236,223,.72)";x.font='400 34px "DM Sans",sans-serif';
     x.fillText(d.periodo,W/2,y+6);y+=70;
     x.fillStyle="#d6b46a";x.font='500 '+(d.numero.length>3?190:300)+'px "Cormorant Garamond",serif';
@@ -374,9 +377,12 @@ footer em{font-family:var(--display);font-size:17px;color:var(--avorio-soft)}
     y+=30;
     var lg=x.createLinearGradient(240,0,W-240,0);lg.addColorStop(0,"rgba(214,180,106,0)");lg.addColorStop(.5,"#d6b46a");lg.addColorStop(1,"rgba(214,180,106,0)");
     x.fillStyle=lg;x.fillRect(240,y,W-480,2);y+=80;
-    x.fillStyle="rgba(243,236,223,.85)";x.font='400 40px "DM Sans",sans-serif';
-    var rr=righe(x,d.testo,W-240);if(rr.length>7){rr=rr.slice(0,7);rr[6]=rr[8].replace(/[\s,.;:]*\S*$/,"")+"…"}
-    rr.forEach(function(r){x.fillText(r,W/2,y);y+=58});
+    x.fillStyle="rgba(243,236,223,.85)";
+    var limite=H-500,fs=40,lh,rr;
+    for(;fs>=30;fs-=2){x.font='400 '+fs+'px "DM Sans",sans-serif';lh=Math.round(fs*1.42);rr=righe(x,d.testo,W-240);if(y+(rr.length-1)*lh<=limite)break}
+    var maxr=Math.max(1,Math.floor((limite-y)/lh)+1);
+    if(rr.length>maxr){rr=rr.slice(0,maxr);rr[maxr-1]=rr[maxr-1].replace(/[\s,.;:]*\S*$/,"")+"…"}
+    rr.forEach(function(r){x.fillText(r,W/2,y);y+=lh});
     x.fillStyle="#d6b46a";x.font='500 32px "DM Sans",sans-serif';
     x.fillText("Scopri i tuoi numeri",W/2,H-420);
     x.fillStyle="rgba(243,236,223,.6)";x.font='400 28px "DM Sans",sans-serif';
@@ -386,9 +392,12 @@ footer em{font-family:var(--display);font-size:17px;color:var(--avorio-soft)}
     return c;
   }
 
+  var ICONA=new Image();ICONA.src="icon-512.png";
+  function iconaPronta(){return new Promise(function(ok){if(ICONA.complete)return ok();ICONA.onload=ICONA.onerror=function(){ok()}})}
+
   function salvaCard(d,nomeFile){
     var fonti=['500 76px "Cormorant Garamond"','italic 600 64px "Cormorant Garamond"','400 40px "DM Sans"','500 32px "DM Sans"'];
-    var attendi=document.fonts&&document.fonts.load?Promise.all(fonti.map(function(f){return document.fonts.load(f)})):Promise.resolve();
+    var attendi=document.fonts&&document.fonts.load?Promise.all(fonti.map(function(f){return document.fonts.load(f)}).concat([iconaPronta()])):iconaPronta();
     attendi.catch(function(){}).then(function(){
       disegna(d).toBlob(function(blob){
         if(!blob){toast("Non riesco a creare l'immagine");return}
